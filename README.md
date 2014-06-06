@@ -1,40 +1,58 @@
-if( $identificacion =~ m/\s?([0-9]{9}\-?[0-9]).*().*/ ){
-	&validarCedula($1);
-	print "el numero de matricula es:".$2;
+#----------------EDAD.PL-----------------
+#! /user/bin/perl
+
+open (ARGV,'dataset.txt')|| die "$!\n";
+while(<ARGV>){
+	if($_ =~ /[E-Te-t]+ (\d{2})(\s)?[Aa]/){
+		$edad = $1;
+		print "Edad: ".$edad." años\n";
+	}else{
+		print " \n";
+
+	}
+	
 }
 
-sub validarCedula{
-	$total=0;
-	$mult=0;
-	@cedula = @_;
-	for($i=0;$i<10;$i++){
-		$numero = chop(@cedula);
-		push(@id,$numero);
-	}
-	@id = reverse(@id);	
-	
-	if( @id == 10 ){
-		for($i = 0 ; $i < @id-1 ; $i++ ){
-			$mult = 0;
-			if( $i%2 != 0 ){#el indice es par
-				$total = $total + $id[$i];
-			}else{#el indice es impar
-				$mult = $id[$i]*2;
-				if($mult > 9){
-					$total = $total + ($mult - 9);
-				}else{
-					$total = $total + $mult;
-				}
-			 }
-	    }
-	    $num = $total/10;
-	    $num = int($num);
-	    $num = ($num+1)*10;
-	    $num = $num-$total;	    
-	    if( $num == $id[9] ){
-	    	print "La cedula es correcta\n";
-	    }  
+#---------------PESO.PL------------------
+#! /user/bin/perl
+
+open (ARGV,'dataset.txt')|| die "$!\n";
+while(<ARGV>){
+	if($_ =~ /[P-Qp-q]eso.*([0-9]{3})+[a-sA-S]*(\slibras)/i){		
+		$peso = $1;
+		print "Peso: ".$peso."libras\n";
+	}elsif($_ =~ /[P-Qp-q]eso ([0-9]{2,3})+[g-sG-S]*(\s[g-sG-S])*/i){
+		$peso = $1;
+		print "Peso: ".$peso."kg\n";
+	}elsif($_ =~ /[A-Za-z]proximadamente ([0-9]{2,3})/i){
+		$peso = $1;
+		print "Peso: ".$peso."kg\n";
+	}elsif($_ =~ /alrededor de (\d{2,3})/i){
+		$peso = $1;
+		print "Peso: ".$peso."kg\n";
 	}else{
-		print "no es el tamaño de la cedula\n";
-	} 	
+		print " \n";
+
+	}
+}
+#----------------TELEFONO.PL-------------
+#! /user/bin/perl
+
+open (ARGV,'dataset.txt')|| die "$!\n";
+while(<ARGV>){
+
+	if($_ !~ /[Mm]atricula.*((199[0-9]|20[0-9]+)[0-9]+)/ && $_ =~ /[A-Ua-u].*(\d{10})/){
+		$telef = $1;
+		print "Telefono: ".$telef."\n";
+	}elsif($_ !~ /[Mm]atricula.*((199[0-9]|20[0-9]+)[0-9]+)/ && $_ =~ /[A-Ua-u].* (\+593\s)(\d{8})/){
+		$telef = $2;
+		print "Telefono: 09".$telef."\n";
+	}elsif($_ !~ /\s?([0-9]{9}\-?[0-9]).*().*/ && $_ =~ /(fono es) (\d{6,12})\,?/ ){
+		$telef = $2;
+		print "Telefono: ".$telef."\n";
+	}else{
+		print " \n";
+
+	}
+	
 }
