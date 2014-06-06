@@ -1,3 +1,8 @@
+if( $identificacion =~ m/\s?([0-9]{9}\-?[0-9]).*().*/ ){
+	&validarCedula($1);
+	print "el numero de matricula es:".$2;
+}
+
 sub validarCedula{
 	$total=0;
 	$mult=0;
